@@ -54,19 +54,17 @@ async function run() {
             res.send(result)
         })
 
-        // get car by id
-        app.get('/all_cars/:id', async (req, res) => {
-            const id = req.params.id
-            // console.log(id)
-            const query = { _id: new ObjectId(id) }
-            // console.log(query)
 
-            const result = await carCollection.findOne(query)
-            // console.log(result)
+
+         // newest car apis
+        app.get('/newest-cars', async (req, res) => {
+            const cursor = carCollection.find().sort({ created_date: -1 }).limit(6)
+            const result = await cursor.toArray()
             res.send(result)
         })
 
 
+// slide data api
         app.get('/slide_data', async (req, res) => {
 
             console.log(req.params)
@@ -79,15 +77,13 @@ async function run() {
 
 
 
+
+
+
         /***********  add to  database related api here **********/
 
-        // add cars 
-        app.post('/all_cars', async (req, res) => {
-            const newCar = req.body
-            const result = await productsCollection.insertOne(newCar)
-            res.send(result)
-        })
-
+        
+        
 
         // Send a ping to confirm a successful connection
         await client.db("admin").command({ ping: 1 });
