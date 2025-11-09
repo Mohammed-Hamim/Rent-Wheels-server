@@ -54,7 +54,17 @@ async function run() {
             const result = await cursor.toArray()
             res.send(result)
         })
+        // get car by id
+        app.get('/all_cars/:id', async (req, res) => {
+            const id = req.params.id
+            // console.log(id)
+            const query = { _id: new ObjectId(id) }
+            // console.log(query)
 
+            const result = await carCollection.findOne(query)
+            // console.log(result)
+            res.send(result)
+        })
 
 
         // newest car apis
