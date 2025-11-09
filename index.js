@@ -42,6 +42,7 @@ async function run() {
         const db = client.db("rentWheels")
         const carCollection = db.collection("all_cars")
         const sliderCollection = db.collection("slide_data")
+        const topRatedCarsCollection = db.collection("top_rated_cars")
 
 
 
@@ -56,15 +57,22 @@ async function run() {
 
 
 
-         // newest car apis
+        // newest car apis
         app.get('/newest-cars', async (req, res) => {
             const cursor = carCollection.find().sort({ created_date: -1 }).limit(6)
             const result = await cursor.toArray()
             res.send(result)
         })
 
+        // top rated car api
+        app.get('/top_rated_cars', async (req, res) => {
+            const cursor = topRatedCarsCollection.find()
+            console.log(cursor)
+            const result = await cursor.toArray()
+            res.send(result)
+        })
 
-// slide data api
+        // slide data api
         app.get('/slide_data', async (req, res) => {
 
             console.log(req.params)
@@ -82,8 +90,8 @@ async function run() {
 
         /***********  add to  database related api here **********/
 
-        
-        
+
+
 
         // Send a ping to confirm a successful connection
         await client.db("admin").command({ ping: 1 });
