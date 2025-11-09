@@ -6,7 +6,7 @@ const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const port = process.env.PORT || 3000
 
 
- 
+
 
 // middleware
 app.use(cors())
@@ -41,14 +41,15 @@ async function run() {
         await client.connect();
         const db = client.db("rentWheels")
         const carCollection = db.collection("all_cars")
+        const sliderCollection = db.collection("slide_data")
 
 
 
         // get all cars apis
         app.get('/all_cars', async (req, res) => {
-                  
+
             const cursor = carCollection.find()
-           
+
             const result = await cursor.toArray()
             res.send(result)
         })
@@ -65,6 +66,27 @@ async function run() {
             res.send(result)
         })
 
+
+        app.get('/slide_data', async (req, res) => {
+
+            console.log(req.params)
+            const cursor = sliderCollection.find()
+            console.log(cursor)
+            const result = await cursor.toArray()
+            res.send(result)
+        })
+
+
+
+
+        /***********  add to  database related api here **********/
+
+        // add cars 
+        app.post('/all_cars', async (req, res) => {
+            const newCar = req.body
+            const result = await productsCollection.insertOne(newCar)
+            res.send(result)
+        })
 
 
         // Send a ping to confirm a successful connection
