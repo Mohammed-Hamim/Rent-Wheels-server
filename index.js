@@ -109,7 +109,29 @@ async function run() {
         })
 
 
+        // api for updating car when a user update it 
+        app.patch('/update_car/:id', async (req, res) => {
+            const id = req.params.id
+            const updatedCarData = req.body
 
+            const query = { _id: new ObjectId(id) }
+
+            const update = {
+                $set: {
+                    car_name: updatedCarData.car_name,
+                    description: updatedCarData.description,
+                    category: updatedCarData.category,
+                    rent_price: updatedCarData.rent_price,
+                    location: updatedCarData.location,
+                    image_url: updatedCarData.image_url,
+                    provider_name: updatedCarData.provider_name,
+                    provider_email: updatedCarData.provider_email
+
+                }
+            }
+            const result = await carCollection.updateOne(query, update)
+            res.send(result)
+        })
 
         /***********  add to  database related api here **********/
         // add car api
