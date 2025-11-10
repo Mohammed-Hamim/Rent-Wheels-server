@@ -61,7 +61,7 @@ async function run() {
             res.send(result)
         })
 
-        
+
         // get car by id
         app.get('/all_cars/:id', async (req, res) => {
             const id = req.params.id
@@ -118,6 +118,17 @@ async function run() {
             const result = await carCollection.insertOne(newCar)
             res.send(result)
         })
+
+
+        /***********  remove from  database related api here **********/
+        // delete car by id
+        app.delete("/all_cars/:id", async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) }
+            const result = await carCollection.deleteOne(query)
+            res.send(result)
+        })
+
 
 
         // slide data api
