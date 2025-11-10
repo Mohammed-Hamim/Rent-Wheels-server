@@ -44,16 +44,24 @@ async function run() {
         const sliderCollection = db.collection("slide_data")
         const topRatedCarsCollection = db.collection("top_rated_cars")
 
- /***********  Get from   database related api here **********/
+        /***********  Get from   database related api here **********/
 
         // get all cars apis
         app.get('/all_cars', async (req, res) => {
-
-            const cursor = carCollection.find()
+            console.log(req.query.email)
+            const email = req.query.email
+            // console.log(query)
+            const query = {}
+            if (email) {
+                query.provider_email = email
+            }
+            const cursor = carCollection.find(query)
 
             const result = await cursor.toArray()
             res.send(result)
         })
+
+        
         // get car by id
         app.get('/all_cars/:id', async (req, res) => {
             const id = req.params.id
@@ -82,7 +90,7 @@ async function run() {
             res.send(result)
         })
 
- /*********** update  database related api here **********/
+        /*********** update  database related api here **********/
         // update car data when booked  
         app.patch('/all_cars/:id', async (req, res) => {
             const id = req.params.id
