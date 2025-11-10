@@ -44,7 +44,7 @@ async function run() {
         const sliderCollection = db.collection("slide_data")
         const topRatedCarsCollection = db.collection("top_rated_cars")
 
-
+ /***********  Get from   database related api here **********/
 
         // get all cars apis
         app.get('/all_cars', async (req, res) => {
@@ -82,6 +82,36 @@ async function run() {
             res.send(result)
         })
 
+ /*********** update  database related api here **********/
+        // update car data when booked  
+        app.patch('/all_cars/:id', async (req, res) => {
+            const id = req.params.id
+            const updateCarData = req.body
+            console.log(updateCarData)
+            const query = { _id: new ObjectId(id) }
+            const update = {
+                $set: {
+                    status: updateCarData.status,
+
+                }
+            }
+
+            const result = await carCollection.updateOne(query, update)
+            res.send(result)
+        })
+
+
+
+
+        /***********  add to  database related api here **********/
+        // add car api
+        app.post("/all_cars", async (req, res) => {
+            const newCar = req.body
+            const result = await carCollection.insertOne(newCar)
+            res.send(result)
+        })
+
+
         // slide data api
         app.get('/slide_data', async (req, res) => {
 
@@ -98,7 +128,7 @@ async function run() {
 
 
 
-        /***********  add to  database related api here **********/
+
 
 
 
