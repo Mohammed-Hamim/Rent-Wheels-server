@@ -104,7 +104,6 @@ async function run() {
             const cursor = bookingCollection.find(query)
             const result = await cursor.toArray()
             res.send(result)
-
         })
 
         /*********** update  database related api here **********/
@@ -177,7 +176,13 @@ async function run() {
             const result = await carCollection.deleteOne(query)
             res.send(result)
         })
-
+        // delete booking api 
+        app.delete('/bookings/:id', async (req, res) => {
+            const id = req.params.id
+            const query = { _id: new ObjectId(id) }
+            const result = await bookingCollection.deleteOne(query)
+            res.send(result)
+        })
 
 
         // slide data api
