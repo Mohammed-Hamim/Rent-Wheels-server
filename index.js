@@ -43,6 +43,7 @@ async function run() {
         const carCollection = db.collection("all_cars")
         const sliderCollection = db.collection("slide_data")
         const topRatedCarsCollection = db.collection("top_rated_cars")
+        const bookingCollection = db.collection("bookings")
 
         /***********  Get from   database related api here **********/
 
@@ -88,6 +89,22 @@ async function run() {
             console.log(cursor)
             const result = await cursor.toArray()
             res.send(result)
+        })
+
+
+        // booking api
+        app.get('/bookings', async (req, res) => {
+            const email = req.query.email
+
+            const query = {}
+            if (email) {
+                query.user_email = email
+            }
+
+            const cursor = bookingCollection.find(query)
+            const result = await cursor.toArray()
+            res.send(result)
+
         })
 
         /*********** update  database related api here **********/
@@ -140,6 +157,16 @@ async function run() {
             const result = await carCollection.insertOne(newCar)
             res.send(result)
         })
+
+        // add bookings 
+        app.post('/bookings', async (req, res) => {
+            const booking = req.body
+            const result = await bookingCollection.insertOne(booking)
+            res.send(result)
+        })
+
+
+
 
 
         /***********  remove from  database related api here **********/
