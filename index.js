@@ -6,14 +6,9 @@ const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const port = process.env.PORT || 3000
 
 
-
-
 // middleware
 app.use(cors())
-
 app.use(express.json())
-
-
 
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.ojsbdfn.mongodb.net/?appName=Cluster0`;
@@ -41,23 +36,19 @@ async function run() {
         await client.connect();
         const db = client.db("rentWheels")
         const carCollection = db.collection("all_cars")
-        const sliderCollection = db.collection("slide_data")
         const topRatedCarsCollection = db.collection("top_rated_cars")
         const bookingCollection = db.collection("bookings")
 
         /***********  Get from   database related api here **********/
 
         // get all cars apis
-        app.get('/all_cars', async (req, res) => {
-            console.log(req.query.email)
-            const email = req.query.email
-            // console.log(query)
+        app.get('/all_cars', async (req, res) => {          
+            const email = req.query.email       
             const query = {}
             if (email) {
                 query.provider_email = email
             }
             const cursor = carCollection.find(query)
-
             const result = await cursor.toArray()
             res.send(result)
         })
@@ -66,23 +57,11 @@ async function run() {
         // get car by id
         app.get('/all_cars/:id', async (req, res) => {
             const id = req.params.id
-            // console.log(id)
             const query = { _id: new ObjectId(id) }
-            // console.log(query)
-
-            const result = await carCollection.findOne(query)
-            // console.log(result)
+            const result = await carCollection.findOne(query)         
             res.send(result)
         })
-
-
-        // newest car apis
-        app.get('/newest-cars', async (req, res) => {
-            const cursor = carCollection.find().sort({ created_date: -1 }).limit(6)
-            const result = await cursor.toArray()
-            res.send(result)
-        })
-
+     
         // top rated car api
         app.get('/top_rated_cars', async (req, res) => {
             const cursor = topRatedCarsCollection.find()
@@ -165,9 +144,6 @@ async function run() {
         })
 
 
-
-
-
         /***********  remove from  database related api here **********/
         // delete car by id
         app.delete("/all_cars/:id", async (req, res) => {
@@ -183,27 +159,6 @@ async function run() {
             const result = await bookingCollection.deleteOne(query)
             res.send(result)
         })
-
-
-        // slide data api
-        app.get('/slide_data', async (req, res) => {
-
-            console.log(req.params)
-            const cursor = sliderCollection.find()
-            console.log(cursor)
-            const result = await cursor.toArray()
-            res.send(result)
-        })
-
-
-
-
-
-
-
-
-
-
 
 
         // Send a ping to confirm a successful connection
