@@ -64,8 +64,7 @@ async function run() {
      
         // top rated car api
         app.get('/top_rated_cars', async (req, res) => {
-            const cursor = topRatedCarsCollection.find()
-            console.log(cursor)
+            const cursor = topRatedCarsCollection.find()         
             const result = await cursor.toArray()
             res.send(result)
         })
@@ -74,7 +73,6 @@ async function run() {
         // booking api
         app.get('/bookings', async (req, res) => {
             const email = req.query.email
-
             const query = {}
             if (email) {
                 query.user_email = email
@@ -90,7 +88,7 @@ async function run() {
         app.patch('/all_cars/:id', async (req, res) => {
             const id = req.params.id
             const updateCarData = req.body
-            console.log(updateCarData)
+           
             const query = { _id: new ObjectId(id) }
             const update = {
                 $set: {
